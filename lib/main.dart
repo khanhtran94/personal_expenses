@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:personal_expenses/widgets/user_transaction.dart';
 import 'models/transaction.dart';
-import './widgets/new_transaction.dart';
 import './widgets/new_transaction.dart';
 import './widgets/transaction_list.dart';
 
@@ -19,14 +17,56 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  final List<Transaction> transasctions = [];
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final List<Transaction> _userTransaction = [
+    Transaction(
+        id: 'tx1', title: 'New egg', amount: 56.22, date: DateTime.now())
+  ];
+  void _addNewTransaction(String title, double amount) {
+    final newTx = new Transaction(
+        id: DateTime.now().toString(),
+        title: title,
+        amount: amount,
+        date: DateTime.now());
+
+    setState(() {
+      _userTransaction.add(newTx);
+    });
+  }
+
+  void _startAddNewTransaction(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return GestureDetector(
+              onTap: () {},
+              behavior: HitTestBehavior.opaque,
+              child: NewTransaction(_addNewTransaction));
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter app'),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                _startAddNewTransaction(context);
+              })
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _startAddNewTransaction(context),
+        child: Icon(Icons.add),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -41,7 +81,7 @@ class MyHomePage extends StatelessWidget {
                 color: Colors.amberAccent,
               ),
             ),
-            UserTransaction()
+            TransactionList(_userTransaction)
           ],
         ),
       ),

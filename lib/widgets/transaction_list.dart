@@ -10,15 +10,14 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 300,
-      child: SingleChildScrollView(
-        child: Column(
-          children: transactionList.map((e) {
+      child: ListView.builder(
+          itemBuilder: (ctx, index) {
             return Card(
               child: Row(
                 children: [
                   Container(
                     child: Text(
-                      '\$${e.amount.toString()}',
+                      '\$${transactionList[index].amount.toStringAsFixed(2)}',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -33,11 +32,12 @@ class TransactionList extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${e.title}',
+                        '${transactionList[index].title}',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        DateFormat('dd/MM/yyyy').format(e.date),
+                        DateFormat('dd/MM/yyyy')
+                            .format(transactionList[index].date),
                         style: TextStyle(color: Colors.grey),
                       )
                     ],
@@ -45,9 +45,8 @@ class TransactionList extends StatelessWidget {
                 ],
               ),
             );
-          }).toList(),
-        ),
-      ),
+          },
+          itemCount: transactionList.length),
     );
   }
 }
