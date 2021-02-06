@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter app',
       home: MyHomePage(),
+      theme: ThemeData(primaryColor: Colors.purpleAccent),
     );
   }
 }
@@ -23,10 +24,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _userTransaction = [
-    Transaction(
-        id: 'tx1', title: 'New egg', amount: 56.22, date: DateTime.now())
-  ];
+  final List<Transaction> _userTransaction = [];
   void _addNewTransaction(String title, double amount) {
     final newTx = new Transaction(
         id: DateTime.now().toString(),
