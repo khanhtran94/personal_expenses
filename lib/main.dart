@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'models/transaction.dart';
 import './widgets/new_transaction.dart';
 import './widgets/transaction_list.dart';
+import './widgets/char.dart';
 
 void main() {
   runApp(MyApp());
@@ -48,6 +49,12 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  List<Transaction> get _recentTransaction {
+    return _userTransaction.where((element) {
+      return element.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,13 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              width: double.infinity,
-              child: Card(
-                child: Text('Chart'),
-                elevation: 5,
-                color: Colors.amberAccent,
-              ),
+            Char(
+              recentTransaction: _recentTransaction,
             ),
             TransactionList(_userTransaction)
           ],
